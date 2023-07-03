@@ -3,7 +3,7 @@ import { IsDefined, IsString, IsEmail, MinLength } from 'class-validator';
 export class LoginUserDto {
   @IsDefined()
   @IsString()
-  userName: string;
+  username: string;
 
   @IsDefined()
   @IsString()

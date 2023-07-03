@@ -1,5 +1,5 @@
 const commonConfig = {
-  port: process.env.PORT || 8000,
+  port: process.env.PORT || 7227,
   allowedOrigins: process.env.ALLOWED_ORIGINS || 'http://localhost:3000',
 };
 

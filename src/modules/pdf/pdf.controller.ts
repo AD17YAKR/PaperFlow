@@ -1,19 +1,34 @@
 import {
   Controller,
   Post,
+  Get,
+  Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
+  Param,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { PdfService } from './pdf.service';
+import { PdfFileInterceptor } from '../common/file.filter';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { S3UploadService } from '../common/s3-upload/s3-upload.service';
 
 @Controller('pdf')
 export class PdfController {
-  constructor(private readonly s3UploadService: S3UploadService) {}
+  constructor(private pdfService: PdfService) {}
+
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  async upload(@UploadedFile() file) {
-    const url = await this.s3UploadService.upload(file);
-    return { url: url };
+  @UseGuards(AuthGuard())
+  @UseInterceptors(PdfFileInterceptor)
+  async uploadFile(@UploadedFile() file, @Req() req: any) {
+    const data = await this.pdfService.uploadFile(file, req);
+    return { ...data };
+  }
+
+  @Get(':userId')
+  @UseGuards(AuthGuard())
+  async getAllPdfsForUser(@Param('userId') userId: string) {
+    const pdfs = await this.pdfService.getPdfsByUserId(userId);
+    return pdfs;
   }
 }

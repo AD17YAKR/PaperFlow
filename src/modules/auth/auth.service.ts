@@ -4,24 +4,23 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../user/entity/user.entity';
+import { User, UserDocument } from '../user/schemas/user.schema';
 import { LoginUserDto, CreateUserDto } from '../user/dto/user.dto';
 import * as bcrypt from 'bcrypt';
-import { jwtSecret } from 'src/config/jwt.config';
+import { jwtExpiresIn, jwtSecret } from 'src/config/jwt.config';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectModel(User.name)
+    private userModel: Model<UserDocument>,
     private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { username } });
-
+    const user = await this.userModel.findOne({ username });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedException('Invalid username or password');
     }
@@ -30,11 +29,11 @@ export class AuthService {
   }
 
   async login(user: LoginUserDto): Promise<{ access_token: string }> {
-    const { userName, password } = user;
-    const foundUser = await this.validateUser(userName, password);
+    const { username, password } = user;
+    const foundUser = await this.validateUser(username, password);
 
-    const payload = { username: foundUser.username };
-    const signOptions: JwtSignOptions = { expiresIn: '1h' };
+    const payload = { username, password };
+    const signOptions: JwtSignOptions = { expiresIn: jwtExpiresIn };
     const token = this.jwtService.sign(payload, {
       secret: jwtSecret,
       ...signOptions,
@@ -46,8 +45,9 @@ export class AuthService {
   }
 
   async register(user: CreateUserDto): Promise<User> {
-    const existingUser = await this.userRepository.findOne({
-      where: [{ username: user.username }, { email: user.email }],
+    const { username, email } = user;
+    const existingUser = await this.userModel.findOne({
+      $or: [{ username }, { email }],
     });
 
     if (existingUser) {
@@ -60,12 +60,12 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
-    const newUser = this.userRepository.create({
+    const newUser = this.userModel.create({
       username: user.username,
       email: user.email,
       password: hashedPassword,
     });
 
-    return this.userRepository.save(newUser);
+    return newUser;
   }
 }
