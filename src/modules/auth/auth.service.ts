@@ -28,7 +28,7 @@ export class AuthService {
     return user;
   }
 
-  async login(user: LoginUserDto): Promise<{ access_token: string }> {
+  async login(user: LoginUserDto) {
     const { username, password } = user;
     const foundUser = await this.validateUser(username, password);
 
@@ -39,9 +39,7 @@ export class AuthService {
       ...signOptions,
     });
 
-    return {
-      access_token: token,
-    };
+    return { user: foundUser, access_token: token };
   }
 
   async register(user: CreateUserDto): Promise<User> {

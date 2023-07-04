@@ -6,12 +6,13 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Body,
   Param,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PdfService } from './pdf.service';
 import { PdfFileInterceptor } from '../common/file.filter';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { InputCommentDto } from './dto/comment.dto';
 
 @Controller('pdf')
 export class PdfController {
@@ -21,14 +22,28 @@ export class PdfController {
   @UseGuards(AuthGuard())
   @UseInterceptors(PdfFileInterceptor)
   async uploadFile(@UploadedFile() file, @Req() req: any) {
-    const data = await this.pdfService.uploadFile(file, req);
-    return { ...data };
+    return await this.pdfService.uploadFile(file, req);
   }
 
-  @Get(':userId')
+  @Get('user')
   @UseGuards(AuthGuard())
-  async getAllPdfsForUser(@Param('userId') userId: string) {
-    const pdfs = await this.pdfService.getPdfsByUserId(userId);
-    return pdfs;
+  async getAllPdfsForUser(@Req() req: any) {
+    return this.pdfService.getPdfsByUserId(req.user._id);
+  }
+
+  @Get(':id')
+  @UseGuards(AuthGuard())
+  async getPdfById(@Req() req: any, @Param('id') id: string) {
+    return this.pdfService.getPdfById(id, req.user._id);
+  }
+
+  @Post('comment/:id')
+  @UseGuards(AuthGuard())
+  addCommentToPdf(
+    @Body() payload: InputCommentDto,
+    @Req() req: any,
+    @Param('id') id: string,
+  ) {
+    return this.pdfService.addCommentToPdf(id, req.user._id, payload);
   }
 }
