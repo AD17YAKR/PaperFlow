@@ -5,7 +5,8 @@ import { Readable } from 'stream';
 @Injectable()
 export class S3UploadService {
   async upload(file: any) {
-    const { originalname } = file;
+    const { originalname: fileName } = file;
+    const originalname = fileName.replace(/ /g, '_');
     const bucketS3 = process.env.BACKBLAZE_BUCKET_NAME;
     const uploadedFile = await this.uploadS3(
       file.buffer,

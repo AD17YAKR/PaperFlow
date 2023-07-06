@@ -6,12 +6,14 @@ import { AuthModule } from './modules/auth/auth.module';
 import { S3UploadModule } from './modules/common/common.module';
 import { PdfModule } from './modules/pdf/pdf.module';
 import { databaseConfig } from './config/database.config';
+import { UsersModule } from './modules/user/user.module';
 
 @Module({
   imports: [
     AuthModule,
     S3UploadModule,
     PdfModule,
+    UsersModule,
     MongooseModule.forRoot(databaseConfig.databaseUri),
   ],
   controllers: [AppController],

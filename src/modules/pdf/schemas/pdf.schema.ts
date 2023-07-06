@@ -26,7 +26,7 @@ export class Pdf extends Document {
   comments: CommentDetails[];
 
   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: 'User' }])
-  sharedUserIds: User[];
+  sharedUserIds: string[];
 }
 
 export const PdfSchema = SchemaFactory.createForClass(Pdf);

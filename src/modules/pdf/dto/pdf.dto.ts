@@ -10,3 +10,8 @@ export class CreatePdfDetailsDto {
   @IsDefined()
   userId: string;
 }
+
+export class AddNewUserDto {
+  @IsDefined()
+  sharedUserId: string;
+}

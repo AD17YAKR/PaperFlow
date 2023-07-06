@@ -8,11 +8,13 @@ import {
   UseInterceptors,
   Body,
   Param,
+  Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PdfService } from './pdf.service';
 import { PdfFileInterceptor } from '../common/file.filter';
 import { InputCommentDto } from './dto/comment.dto';
+import { AddNewUserDto } from './dto/pdf.dto';
 
 @Controller('pdf')
 export class PdfController {
@@ -29,6 +31,16 @@ export class PdfController {
   @UseGuards(AuthGuard())
   async getAllPdfsForUser(@Req() req: any) {
     return this.pdfService.getPdfsByUserId(req.user._id);
+  }
+
+  @Patch('user/share/:id')
+  @UseGuards(AuthGuard())
+  async sharePdfToUser(
+    @Req() req: any,
+    @Param('id') id: string,
+    @Body() payload: AddNewUserDto,
+  ) {
+    return this.pdfService.sharePdfToUser(id, req.user._id, payload);
   }
 
   @Get(':id')

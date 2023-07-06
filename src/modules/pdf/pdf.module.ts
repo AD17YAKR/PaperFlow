@@ -10,6 +10,7 @@ import {
   CommentDetails,
   CommentDetailsSchema,
 } from './schemas/comments.schema';
+import { UsersModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import {
       { name: CommentDetails.name, schema: CommentDetailsSchema },
     ]),
     S3UploadModule,
+    UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [PdfController],

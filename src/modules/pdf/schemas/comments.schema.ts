@@ -3,6 +3,7 @@ import { Document, HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { User } from 'src/modules/user/schemas/user.schema';
 import uniqueValidator from 'mongoose-unique-validator';
 import { Pdf } from './pdf.schema';
+import { Type } from 'class-transformer';
 
 export type CommentDetailsDocument = HydratedDocument<CommentDetails>;
 
@@ -20,9 +21,18 @@ export class CommentDetails extends Document {
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
   userId: User;
+
+  @Type(() => User)
+  userDetails: User;
 }
 
 export const CommentDetailsSchema =
   SchemaFactory.createForClass(CommentDetails);
+
+CommentDetailsSchema.virtual('userDetails', {
+  ref: 'User',
+  localField: 'userId',
+  foreignField: '_id',
+});
 
 CommentDetailsSchema.plugin(uniqueValidator, { type: 'MongooseError' });

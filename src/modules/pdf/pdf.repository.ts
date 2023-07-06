@@ -23,8 +23,23 @@ export class PdfRepository {
     return this.pdfModel.find({ userId }).populate('comments');
   }
 
+  async sharePdfToUser(pdfId: string, sharedUserIds: string[]): Promise<Pdf> {
+    const res = await this.pdfModel.findOneAndUpdate(
+      { _id: pdfId },
+      { $set: { sharedUserIds } },
+      { new: true },
+    );
+    return res;
+  }
+
   async getPdfById(_id: string): Promise<Pdf> {
-    return (await this.pdfModel.findOne({ _id })).populate('comments');
+    return await this.pdfModel.findOne({ _id }).populate({
+      path: 'comments',
+      populate: {
+        path: 'userDetails',
+        model: 'User',
+      },
+    });
   }
 
   async addCommentToPdf(

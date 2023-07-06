@@ -1,12 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
+import { AuthGuard } from '@nestjs/passport';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  @Get('details')
+  @UseGuards(AuthGuard())
+  findUserById(@Req() req: any) {
+    return this.userService.findUserById(req.user._id);
+  }
+
+  @Get('all')
+  @UseGuards(AuthGuard())
+  getAllUsers() {
+    return this.userService.getAllUsers();
   }
 }
