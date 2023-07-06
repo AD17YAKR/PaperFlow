@@ -21,7 +21,7 @@ EXPOSE 7227
 
 # Set the environment variables
 ENV PORT=7227
-ENV DATABASE_URI=mongodb://127.0.0.1:27017/paperflow
+ENV DATABASE_URI=mongodb+srv://ad17yakr:<password>@clusterx.onuzbly.mongodb.net/
 ENV JWT_SECRET_KEY=ecdc4786eebfe9261c0762de79a1afc6c7a904b29ec9d337af92ea49520930cc
 ENV JWT_EXPIRE_TIME=30D
 ENV BACKBLAZE_ENDPOINT=s3.us-east-005.backblazeb2.com

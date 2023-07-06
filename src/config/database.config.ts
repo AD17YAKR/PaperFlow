@@ -1,3 +1,5 @@
 export const databaseConfig = {
-  databaseUri: 'mongodb://127.0.0.1:27017/paperflow',
+  databaseUri:
+    process.env.DATABASE_URI ||
+    'mongodb+srv://ad17yakr:1234567890@clusterx.onuzbly.mongodb.net/',
 };
