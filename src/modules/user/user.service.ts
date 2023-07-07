@@ -35,7 +35,7 @@ export class UserService {
     return await this.userRepository.findUserById(userId);
   }
 
-  async getAllUsers() {
-    return await this.userRepository.getAllUsers();
+  async getAllUsers(userId: string) {
+    return await this.userRepository.getAllUsers(userId);
   }
 }

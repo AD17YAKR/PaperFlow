@@ -64,11 +64,7 @@ export class PdfService {
 
   async getPdfById(id, userId: string) {
     const pdfDetail = await this.pdfRepository.getPdfById(id);
-    if (pdfDetail.userId.toString() !== userId.toString()) {
-      throw new UnauthorizedException();
-    } else {
-      return pdfDetail;
-    }
+    return pdfDetail;
   }
 
   async addCommentToPdf(

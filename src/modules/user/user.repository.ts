@@ -22,8 +22,8 @@ export class UserRepository {
     ]);
   }
 
-  async getAllUsers(): Promise<User[]> {
-    return await this.userModel.find({});
+  async getAllUsers(userId: string): Promise<User[]> {
+    return await this.userModel.find({ _id: { $ne: userId } });
   }
 
   async addPdfToUserId(userId: string, pdfs: string[]) {

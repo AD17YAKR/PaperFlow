@@ -14,7 +14,7 @@ export class UserController {
 
   @Get('all')
   @UseGuards(AuthGuard())
-  getAllUsers() {
-    return this.userService.getAllUsers();
+  getAllUsers(@Req() req: any) {
+    return this.userService.getAllUsers(req.user._id);
   }
 }
