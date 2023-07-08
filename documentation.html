@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PaperFlow API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 30px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-top: 40px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+        }
+
+        code {
+            font-size: 14px;
+            font-family: Consolas, monospace;
+        }
+
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>PaperFlow API Documentation</h1>
+
+    <h2>Introduction</h2>
+    <p>The PDF Management &amp; Collaboration System is a web application designed to simplify the management and
+        collaboration of PDF files. It provides users with the ability to securely upload, share, and collaborate on PDF
+        documents. The system ensures easy access to shared files, facilitates commenting and discussions, and
+        prioritizes data privacy and security.</p>
+
+    <h3>Project Links:</h3>
+    <ul>
+        <li><strong>Backend (NestJs):</strong> <a href="https://github.com/AD17YAKR/PaperFlow">GitHub Repository</a>
+        </li>
+        <li><strong>Frontend (Flutter):</strong> <a href="https://github.com/AD17YAKR/PaperFlow_ui">GitHub
+                Repository</a></li>
+        <li><strong>Video Demonstration:</strong> <a
+                href="https://user-images.githubusercontent.com/71925269/251809509-6d3f2666-25be-4f99-909c-863f9ecbd352.webm">Watch
+                Here</a></li>
+        <li><strong>Deployed Backend Link:</strong> <a
+                href="https://paperflow-server.onrender.com">https://paperflow-server.onrender.com</a></li>
+        <li><strong>APK Link:</strong> <a
+                href="https://drive.google.com/file/d/1SCrsHzC9dtl8FHIuWpVN0Cm-ODcDNpyh/view?usp=sharing">Click Here</a>
+        </li>
+    </ul>
+
+    <h3>Base URL:</h3>
+    <p>The base URL for all API endpoints in this system is <code>{{BaseUrl}}</code>.</p>
+
+    <h2>Authentication (Auth)</h2>
+    <p>The system utilizes bearer token authentication for protected routes. Users need to obtain a valid token by
+        signing up and logging in before accessing the protected endpoints. The token should be included in the
+        <code>Authorization</code> header of each request as a bearer token.</p>
+
+    <h3>Login</h3>
+    <ul>
+        <li><strong>Description:</strong> Authenticate a user by logging in.</li>
+        <li><strong>Method:</strong> POST</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}/auth/login</code></li>
+        <li><strong>Request Body:</strong></li>
+    </ul>
+    <pre><code>{
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "password": "password123"
+}</code></pre>
+
+    <h3>Register User</h3>
+    <ul>
+        <li><strong>Description:</strong> Register a new user.</li>
+        <li><strong>Method:</strong> POST</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}/auth/register</code></li>
+        <li><strong>Request Body:</strong></li>
+    </ul>
+    <pre><code>{
+  "username": "Aditya",
+  "email": "Aditya@example.com",
+  "password": "password123"
+}</code></pre>
+
+    <h2>PDF (Pdf)</h2>
+    <p>This section contains endpoints related to PDF file management and collaboration.</p>
+
+    <h3>Upload PDF</h3>
+    <ul>
+        <li><strong>Description:</strong> Upload a PDF file to the system.</li>
+        <li><strong>Method:</strong> POST</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}/pdf/upload</code></li>
+        <li><strong>Authorization:</strong> Bearer token required</li>
+        <li><strong>Request Body:</strong></li>
+    </ul>
+    <pre><code>
+    {
+        "file": [PDF file to upload]
+    }
+  </code></pre>
+    <p><strong>Response:</strong> Returns the URL/location of the uploaded file.</p>
+
+    <h3>Add Comment to PDF</h3>
+    <ul>
+        <li><strong>Description:</strong> Add a comment to a specific PDF file.</li>
+        <li><strong>Method:</strong> POST</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}/pdf/comment/{pdfId}</code></li>
+        <li><strong>Authorization:</strong> Bearer token required</li>
+        <li><strong>Request Body:</strong></li>
+    </ul>
+    <pre><code>{
+  "comment": "Is this working?"
+}</code></pre>
+
+    <h3>Get PDF By ID</h3>
+    <ul>
+        <li><strong>Description:</strong> Retrieve details of a specific PDF file by its ID.</li>
+        <li><strong>Method:</strong> GET</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}/pdf/{pdfId}</code></li>
+        <li><strong>Authorization:</strong> Bearer token required</li>
+    </ul>
+
+    <h3>Get PDF By User</h3>
+    <ul>
+        <li><strong>Description:</strong> Retrieve all PDF files and shared PDF files accessible by the user.</li>
+        <li><strong>Method:</strong> GET</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}/pdf/user</code></li>
+        <li><strong>Authorization:</strong> Bearer token required</li>
+    </ul>
+
+    <h3>Share PDF Access with Another User</h3>
+    <ul>
+        <li><strong>Description:</strong> Share PDF file access with another user.</li>
+        <li><strong>Method:</strong>PATCH</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}/pdf/user/share/{pdfId}</code></li>
+        <li><strong>Authorization:</strong> Bearer token required</li>
+        <li><strong>Request Body:</strong></li>
+    </ul>
+    <pre><code>{
+  "sharedUserId": "64a4047d6ef9621d10cd05dd"
+}</code></pre>
+
+    <h2>User</h2>
+    <p>This section contains endpoints related to user management and information retrieval.</p>
+
+    <h3>Get User Details</h3>
+    <ul>
+        <li><strong>Description:</strong> Get the details of the authenticated user, including their PDF files and
+            shared PDF files.</li>
+        <li><strong>Method:</strong> GET</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}/user/details</code></li>
+        <li><strong>Authorization:</strong> Bearer token required</li>
+    </ul>
+
+    <h3>Get All Users</h3>
+    <ul>
+        <li><strong>Description:</strong> Get the data of all users in the system.</li>
+        <li><strong>Method:</strong> GET</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}/user/all</code></li>
+        <li><strong>Authorization:</strong> Bearer token required</li>
+    </ul>
+
+    <h2>Hello World</h2>
+    <p>This endpoint is used to check if the server is up and running.</p>
+
+    <h3>Hello World</h3>
+    <ul>
+        <li><strong>Description:</strong> Check if the server is up and running.</li>
+        <li><strong>Method:</strong> GET</li>
+        <li><strong>URL:</strong> <code>{{BaseUrl}}</code></li>
+    </ul>
+
+    <p>Note: Replace <code>{{BaseUrl}}</code> with the actual base URL of the deployed API.</p>
+
+    <p>For more details and implementation, please refer to the <a href="https://github.com/AD17YAKR/PaperFlow">GitHub
+            repositories</a> for the backend and frontend components of the PaperFlow application.</p>
+</body>
+
+</html>

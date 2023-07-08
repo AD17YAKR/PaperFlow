@@ -4,9 +4,11 @@
 The PDF Management & Collaboration System is a web application designed to simplify the management and collaboration of PDF files. It provides users with the ability to securely upload, share, and collaborate on PDF documents. The system ensures easy access to shared files, facilitates commenting and discussions, and prioritizes data privacy and security.
 
 **Project Links:**
-- Backend (NestJs): [GitHub Repository](https://github.com/AD17YAKR/PaperFlow)
-- Frontend (Flutter): [GitHub Repository](https://github.com/AD17YAKR/PaperFlow_ui)
-- Video Demonstration: [Watch Here](https://user-images.githubusercontent.com/71925269/251809509-6d3f2666-25be-4f99-909c-863f9ecbd352.webm)
+- **Backend (NestJs):** [GitHub Repository](https://github.com/AD17YAKR/PaperFlow)
+- **Frontend (Flutter):** [GitHub Repository](https://github.com/AD17YAKR/PaperFlow_ui)
+- **Video Demonstration:** [Watch Here](https://user-images.githubusercontent.com/71925269/251809509-6d3f2666-25be-4f99-909c-863f9ecbd352.webm)
+- **Deployed Backend Link:** https://paperflow-server.onrender.com
+- **APK Link :** [Click Here](https://drive.google.com/file/d/1SCrsHzC9dtl8FHIuWpVN0Cm-ODcDNpyh/view?usp=sharing)
 
 **Base URL:** The base URL for all API endpoints in this system is `{{BaseUrl}}`.
 
