@@ -1,124 +1,115 @@
-# API Documentation - PDF Management & Collaboration System
+# PaperFlow API Documentation
 
 ## Introduction
-
 The PDF Management & Collaboration System is a web application designed to simplify the management and collaboration of PDF files. It provides users with the ability to securely upload, share, and collaborate on PDF documents. The system ensures easy access to shared files, facilitates commenting and discussions, and prioritizes data privacy and security.
 
-**Base URL**
-The base URL for all API endpoints in this system is: `{{BaseUrl}}`
+**Project Links:**
+- Backend (NestJs): [GitHub Repository](https://github.com/AD17YAKR/PaperFlow)
+- Frontend (Flutter): [GitHub Repository](https://github.com/AD17YAKR/PaperFlow_ui)
+- Video Demonstration: [Watch Here](https://user-images.githubusercontent.com/71925269/251809509-6d3f2666-25be-4f99-909c-863f9ecbd352.webm)
 
-## Authentication
+**Base URL:** The base URL for all API endpoints in this system is `{{BaseUrl}}`.
 
+## Authentication (Auth)
 The system utilizes bearer token authentication for protected routes. Users need to obtain a valid token by signing up and logging in before accessing the protected endpoints. The token should be included in the `Authorization` header of each request as a bearer token.
 
-### User Signup and Authentication
-
-#### Register User
-
-- **Endpoint:** `POST /auth/register`
-- **Description:** Allows users to create an account by providing essential information such as name, email address, and password.
+### Login
+- **Description:** Authenticate a user by logging in.
+- **Method:** POST
+- **URL:** `{{BaseUrl}}/auth/login`
 - **Request Body:**
-  ```json
-  {
-    "username": "example_user",
-    "email": "user@example.com",
+```json
+{
+    "username": "john_doe",
+    "email": "john.doe@example.com",
     "password": "password123"
-  }
-  ```
-- **Response:** No response body is returned.
+}
+```
 
-#### Login
-
-- **Endpoint:** `POST /auth/login`
-- **Description:** Authenticates users and provides them with a bearer token for accessing protected routes.
+### Register User
+- **Description:** Register a new user.
+- **Method:** POST
+- **URL:** `{{BaseUrl}}/auth/register`
 - **Request Body:**
-  ```json
-  {
-    "username": "example_user",
-    "email": "user@example.com",
+```json
+{
+    "username": "Aditya",
+    "email": "Aditya@example.com",
     "password": "password123"
-  }
-  ```
-- **Response:** No response body is returned. The bearer token will be included in the response header.
+}
+```
 
-### File Upload
+## PDF (Pdf)
+This section contains endpoints related to PDF file management and collaboration.
 
-- **Endpoint:** `POST /pdf/upload`
-- **Description:** Allows authenticated users to upload a PDF file to the system.
+### Upload PDF
+- **Description:** Upload a PDF file to the system.
+- **Method:** POST
+- **URL:** `{{BaseUrl}}/pdf/upload`
+- **Authorization:** Bearer token required
 - **Request Body:**
+  - `file`: PDF file to upload
+- **Response:** Returns the URL/location of the uploaded file.
 
-  - Content-Type: `multipart/form-data`
-  - Form Data:
-    - `file`: PDF file to upload (File)
-
-- **Response:** No response body is returned.
-
-### Dashboard
-
-- **Endpoint:** `GET /pdf`
-- **Description:** Retrieves the list of uploaded PDF files accessible to the authenticated user.
-- **Response:**
-  ```json
-  [
-    {
-      "id": "64a4050d21b01a2e1d3841f5",
-      "name": "example_file.pdf",
-      "uploadedAt": "2023-07-07T12:00:00Z",
-      "uploadedBy": "example_user"
-    },
-    ...
-  ]
-  ```
-
-### File Sharing
-
-- **Endpoint:** `POST /pdf/share/{fileId}`
-- **Description:** Generates a unique link to share a PDF file with authenticated users.
-- **URL Parameters:**
-  - `fileId`: ID of the PDF file to share
-- **Response:**
-  ```json
-  {
-    "link": "https://example.com/shared/{fileId}"
-  }
-  ```
-
-### Commenting
-
-- **Endpoint:** `POST /pdf/comment/{fileId}`
-- **Description:** Allows authenticated users to add comments to a specific PDF file.
-- **URL Parameters:**
-  - `fileId`: ID of the PDF file to comment on
+### Add Comment to PDF
+- **Description:** Add a comment to a specific PDF file.
+- **Method:** POST
+- **URL:** `{{BaseUrl}}/pdf/comment/{pdfId}`
+- **Authorization:** Bearer token required
 - **Request Body:**
-  ```json
-  {
-    "comment": "This is a comment."
-  }
-  ```
-- **Response:** No response body is returned.
+```json
+{
+    "comment": "Is this working?"
+}
+```
 
-- **Endpoint:** `GET /pdf/comment/{fileId}`
-- **Description:** Retrieves the comments for a specific PDF file.
-- **URL Parameters:**
-  - `fileId`: ID of the PDF file to retrieve comments for
-- **Response:**
-  ```json
-  [
-    {
-      "id": "98f7e6d5c4b3a2",
-      "comment": "This is a comment.",
-      "createdAt": "2023-07-07T12:00:00Z",
-      "createdBy": "example_user"
-    },
-    ...
-  ]
-  ```
+### Get PDF By ID
+- **Description:** Retrieve details of a specific PDF file by its ID.
+- **Method:** GET
+- **URL:** `{{BaseUrl}}/pdf/{pdfId}`
+- **Authorization:** Bearer token required
 
-### Security and Data Privacy
+### Get PDF By User
+- **Description:** Retrieve all PDF files and shared PDF files accessible by the user.
+- **Method:** GET
+- **URL:** `{{BaseUrl}}/pdf/user`
+- **Authorization:** Bearer token required
 
-- Access to PDF files and comments is restricted to authorized users only.
-- User passwords are securely hashed and stored.
+### Share PDF Access with Another User
+- **Description:** Share PDF file access with another user.
+- **Method:** PATCH
+- **URL:** `{{BaseUrl}}/pdf/user/share/{pdfId}`
+- **Authorization:** Bearer token required
+- **Request Body:**
+```json
+{
+    "sharedUserId": "64a4047d6ef9621d10cd05dd"
+}
+```
 
-Please note that all endpoints require valid authentication except for user registration and login. Ensure that you include the bearer token in the `Authorization` header of each request.
+## User
+This section contains endpoints related to user management and information retrieval.
 
-This API documentation provides an overview of the available routes and their functionalities for the PDF Management & Collaboration System. For more detailed information about request/response structures and error handling, please refer to the API documentation or contact the system administrators.
+### Get User Details
+- **Description:** Get the details of the authenticated user, including their PDF files and shared PDF files.
+- **Method:** GET
+- **URL:** `{{BaseUrl}}/user/details`
+- **Authorization:** Bearer token required
+
+### Get All Users
+- **Description:** Get the data of all users in the system.
+- **Method:** GET
+- **URL:** `{{BaseUrl}}/user/all`
+- **Authorization:** Bearer token required
+
+## Hello World
+This endpoint is used to check if the server is up and running.
+
+### Hello World
+- **Description:** Check if the server is up and running.
+- **Method:** GET
+- **URL:** `{{BaseUrl}}`
+
+Note: Replace `{{BaseUrl}}` with the actual base URL of the deployed API.
+
+For more details and implementation, please refer to the [GitHub repositories](https://github.com/AD17YAKR/PaperFlow) for the backend and frontend components of the PaperFlow application.
