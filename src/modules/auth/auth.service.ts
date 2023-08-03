@@ -43,9 +43,8 @@ export class AuthService {
   }
 
   async register(user: CreateUserDto): Promise<User> {
-    const { username, email } = user;
     const existingUser = await this.userModel.findOne({
-      $or: [{ username }, { email }],
+      $or: [{ username: user.username }, { email: user.email }],
     });
 
     if (existingUser) {
@@ -58,7 +57,7 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
-    const newUser = this.userModel.create({
+    const newUser = await this.userModel.create({
       username: user.username,
       email: user.email,
       password: hashedPassword,

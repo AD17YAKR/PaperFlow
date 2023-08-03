@@ -8,13 +8,13 @@ export class UserController {
 
   @Get('details')
   @UseGuards(AuthGuard())
-  findUserById(@Req() req: any) {
+  async findUserById(@Req() req: any) {
     return this.userService.findUserById(req.user._id);
   }
 
   @Get('all')
   @UseGuards(AuthGuard())
-  getAllUsers(@Req() req: any) {
+  async getAllUsers(@Req() req: any) {
     return this.userService.getAllUsers(req.user._id);
   }
 }

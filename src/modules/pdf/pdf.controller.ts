@@ -51,7 +51,7 @@ export class PdfController {
 
   @Post('comment/:id')
   @UseGuards(AuthGuard())
-  addCommentToPdf(
+  async addCommentToPdf(
     @Body() payload: InputCommentDto,
     @Req() req: any,
     @Param('id') id: string,
